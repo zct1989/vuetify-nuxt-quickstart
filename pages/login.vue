@@ -1,0 +1,53 @@
+<template>
+  <v-layout column justify-center align-center>
+    <v-flex xs12 sm8 md6 align-center justify-center align-content-center>
+      <v-form ref="login-form" v-model="loginValid">
+        <v-text-field label="Name" v-model="loginModel.name" :rules="loginRules.name" :counter="10" required></v-text-field>
+        <v-text-field label="E-mail" v-model="loginModel.email" :rules="loginRules.email" required></v-text-field>
+        <v-btn :disabled="!loginValid" @click="onLogin">
+          submit
+        </v-btn>
+        <v-btn @click="onClear">clear</v-btn>
+      </v-form>
+    </v-flex>
+  </v-layout>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from "nuxt-property-decorator";
+
+@Component
+export default class Login extends Vue {
+  private loginModel = {
+    name: "",
+    password: ""
+  };
+
+  private loginValid = true;
+
+  private loginRules = {
+    name: [
+      value => !!value || "Name is required",
+      value => value&&value.length <= 10 || "Name must be less than 10 characters"
+    ],
+    email: [
+      value => !!value || "E-mail is required",
+      value => /.+@.+/.test(value) || "E-mail must be valid"
+    ]
+  };
+
+  private onLogin() {
+    let loginForm = this.$refs["login-form"] as any;
+    loginForm.reset();
+
+    if (loginForm.validate()) {
+
+    }
+  }
+
+  private onClear() {
+    let loginForm = this.$refs["login-form"] as any;
+    loginForm.reset();
+  }
+}
+</script>
