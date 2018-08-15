@@ -64,8 +64,7 @@ module.exports = {
         })
     },
     middleware: [
-      'launch',
-      'auth'
+      'launch'
     ]
   },
   modules: [

@@ -1,8 +1,9 @@
 import { createDecorator } from 'vue-class-component'
 import injector from 'vue-inject';
-import { Observable,empty } from "rxjs";
+import { Observable, empty } from "rxjs";
 import { NetService } from '~/utils/net.service';
 import * as UUID from "uuidjs";
+import Vue from 'vue'
 const netService = new NetService()
 /**
  * 组件内依赖注入
@@ -70,9 +71,9 @@ export function Debounce(time: number = 500) {
  * 设置布局
  * @param target
  */
-export function Layout(layout: string) {
+export function Middleware(middleware: string) {
   return function (target) {
-    target.$layout = layout;
+    target.middleware = middleware;
     return target;
   }
 }
@@ -81,12 +82,19 @@ export function Layout(layout: string) {
  * 设置布局
  * @param target
  */
-export function Header(header: string) {
+export function Layout(layout: string, config = {}) {
   return function (target) {
-    target.$header = header;
+    target.options.layout = ({ store }) => {
+      store.commit('updateLayoutConfig', {
+        layout,
+        config
+      })
+      return layout
+    };
     return target;
   }
 }
+
 
 /**
  * 权限码中间件

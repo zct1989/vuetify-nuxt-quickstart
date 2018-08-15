@@ -14,10 +14,12 @@
 </template>
 
 <script lang="ts">
+import { Layout } from "~/core/decorator";
 import { Dependencies } from "~/core/decorator";
 import { Component, Vue } from "nuxt-property-decorator";
 import { UserService } from "~/services/user.service";
 
+@Layout("default")
 @Component
 export default class Login extends Vue {
   @Dependencies(UserService) 
@@ -46,12 +48,18 @@ export default class Login extends Vue {
     let loginForm = this.$refs["login-form"] as any;
 
     if (loginForm.validate()) {
-      this.userService
-        .login({
-          username: "123",
-          password: "asdsd"
-        })
-        .subscribe(user => {}, msg => {});
+       this.$router.push('/')
+      // this.userService
+      //   .login({
+      //     username: "123",
+      //     password: "asdsd"
+      //   })
+      //   .subscribe(user => {
+
+      //   }, msg => {
+      //     console.log(123123123)
+         
+      //   });
     }
   }
 

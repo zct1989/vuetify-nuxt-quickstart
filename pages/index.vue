@@ -7,10 +7,12 @@
 </template>
 
 <script lang="ts">
+import { Layout } from "~/core/decorator";
 import { Component, Vue } from "nuxt-property-decorator";
 
-@Component({
-  layout: "empty"
+@Layout("default", {
+  toolbar: true
 })
+@Component
 export default class extends Vue {}
 </script>
