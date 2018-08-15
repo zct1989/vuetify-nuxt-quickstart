@@ -1,10 +1,10 @@
 export const state = () => ({
-  launch:false,
-  counter: 0
+  launch: false,
+  user: ''
 })
 
 export const mutations = {
-  increment (state) {
-    state.counter++
+  updateUser(state, user) {
+    state.user = user
   }
 }

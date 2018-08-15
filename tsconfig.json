@@ -20,6 +20,7 @@
     "removeComments": true,
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization":false,
     "baseUrl": ".",
     "allowJs": true,
     "paths": {

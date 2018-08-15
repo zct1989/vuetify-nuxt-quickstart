@@ -13,9 +13,12 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "dayjs": "^1.7.5",
     "nuxt-edge": "^2.0.0-25569931.85a8af5",
     "nuxt-property-decorator": "^1.2.0",
     "rxjs": "^6.2.2",
+    "uuidjs": "^4.0.3",
     "vue-inject": "^2.1.1",
     "vuetify": "^1.1.11",
     "vuex-class": "^0.3.1"

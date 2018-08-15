@@ -1,11 +1,9 @@
-import "reflect-metadata";
 import { createDecorator } from 'vue-class-component'
 import injector from 'vue-inject';
 import { Observable,empty } from "rxjs";
-// import { NetService } from '~/utils/net.service';
-// import * as UUID from "uuidjs";
-// const netService = new NetService()
-
+import { NetService } from '~/utils/net.service';
+import * as UUID from "uuidjs";
+const netService = new NetService()
 /**
  * 组件内依赖注入
  * @param target
@@ -72,19 +70,21 @@ export function Debounce(time: number = 500) {
  * 设置布局
  * @param target
  */
-export function Layout(option: any) {
-  if (typeof option === 'string') {
-    return function (target) {
-      target.$layout = option;
-      return target;
-    }
+export function Layout(layout: string) {
+  return function (target) {
+    target.$layout = layout;
+    return target;
   }
+}
 
-  if (typeof option === 'object') {
-    return function (target) {
-      //TODO: 修改option配置
-      return target;
-    }
+/**
+ * 设置布局
+ * @param target
+ */
+export function Header(header: string) {
+  return function (target) {
+    target.$header = header;
+    return target;
   }
 }
 
@@ -99,47 +99,31 @@ export function Auth(code: Number) {
   }
 }
 
-
-/**
- * 设置扩展属性
- * @param extend
- */
-export function Extend(data: Object) {
-  return function (target) {
-    Object.entries(data).forEach(([key, value]) => {
-      target[key] = value;
-    })
-
-    return target;
-  }
-}
-
-
 /**
  * 网络请求行为装饰器
  */
-// export function Request({ server }) {
-//   return function (target, name, descriptor) {
-//     var oldValue = descriptor.value;
-//     let uuid = UUID.generate()
-//     descriptor.value = function () {
-//       let option = oldValue.apply(target, arguments);
+export function Request({ server }) {
+  return function (target, name, descriptor) {
+    var oldValue = descriptor.value;
+    let uuid = UUID.generate()
+    descriptor.value = function () {
+      let option = oldValue.apply(target, arguments);
 
-//       // 队列约束
-//       let data = NetService.requestQueue.get(uuid)
+      // 队列约束
+      let data = NetService.requestQueue.get(uuid)
 
-//       if (data) {
-//         return Observable.empty()
-//       }
+      if (data) {
+        return empty()
+      }
 
-//       return Observable.create((observer) => {
-//         netService.send(Object.assign({
-//           id: uuid,
-//           server
-//         }, option), observer)
-//       })
-//     };
+      return Observable.create((observer) => {
+        netService.send(Object.assign({
+          id: uuid,
+          server
+        }, option), observer)
+      })
+    };
 
-//     return descriptor;
-//   }
-// }
+    return descriptor;
+  }
+}

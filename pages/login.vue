@@ -5,19 +5,24 @@
         <v-text-field label="Name" v-model="loginModel.name" :rules="loginRules.name" :counter="10" required></v-text-field>
         <v-text-field label="E-mail" v-model="loginModel.email" :rules="loginRules.email" required></v-text-field>
         <v-btn :disabled="!loginValid" @click="onLogin">
-          submit
+          登录
         </v-btn>
-        <v-btn @click="onClear">clear</v-btn>
+        <v-btn @click="onClear">重置</v-btn>
       </v-form>
     </v-flex>
   </v-layout>
 </template>
 
 <script lang="ts">
+import { Dependencies } from "~/core/decorator";
 import { Component, Vue } from "nuxt-property-decorator";
+import { UserService } from "~/services/user.service";
 
 @Component
 export default class Login extends Vue {
+  @Dependencies(UserService) 
+  private userService: UserService;
+
   private loginModel = {
     name: "",
     password: ""
@@ -28,7 +33,8 @@ export default class Login extends Vue {
   private loginRules = {
     name: [
       value => !!value || "Name is required",
-      value => value&&value.length <= 10 || "Name must be less than 10 characters"
+      value =>
+        (value && value.length <= 10) || "Name must be less than 10 characters"
     ],
     email: [
       value => !!value || "E-mail is required",
@@ -38,10 +44,14 @@ export default class Login extends Vue {
 
   private onLogin() {
     let loginForm = this.$refs["login-form"] as any;
-    loginForm.reset();
 
     if (loginForm.validate()) {
-
+      this.userService
+        .login({
+          username: "123",
+          password: "asdsd"
+        })
+        .subscribe(user => {}, msg => {});
     }
   }
 
