@@ -1,28 +1,14 @@
-import axios from 'axios'
+import axiosInstance from '~/plugins/axios'
 import Qs from 'qs'
-import app from '~/config/app.config'
 // import store from '~/store'
-import { Observable ,empty} from "rxjs";
+import { Observable, empty } from "rxjs";
 
 const getType = ['GET', 'DELETE'] // 使用GET请求类型
 
 export class NetService {
-  static requestQueue = new Map()
-  // 使用GET请求类型
-  private axiosInstance
+  public static requestQueue = new Map()
   private userToken
   private store
-
-  constructor() {
-    this.axiosInstance = axios.create({
-      baseURL: app.url.server,
-      timeout: app.timeout,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    })
-  }
 
   public static generateRequestUrl({ service, controller, action, url }: { service: string, controller: string, action: string, url?: string }, append = [], sort?): String {
     // 自定义url优先级最高
@@ -86,7 +72,7 @@ export class NetService {
       }
 
       // 逻辑异常检测
-      if (ex.errno === undefined) {
+      if (ex.errmsg === undefined) {
         console.error(ex.stack)
         return empty()
       } else {
@@ -106,7 +92,7 @@ export class NetService {
 
     let url = NetService.generateRequestUrl(options.server, options.append, options.sort)
     let method = options.server.type || 'GET'
-    let headers = this.generateRequestHeader(options.headers)
+    let headers = options.headers || {}
 
     // 分页检测
     if (options.page) {
@@ -119,7 +105,7 @@ export class NetService {
     NetService.requestQueue.set(options.id, options)
 
     // 创建待观察对象
-    this.axiosInstance.request({
+    axiosInstance.request({
       method,
       url,
       headers,
@@ -135,14 +121,13 @@ export class NetService {
       // 删除任务请求队列
       NetService.requestQueue.delete(options.id)
 
-      if (result.errno) {
+      if (result.status !== 'SUCCESS') {
         return this.catchHandle(options, observer).call(this, {
-          errmsg: result.errmsg,
-          errno: result.errno
+          errmsg: result.msg
         })
       }
 
-      let data = result.data
+      let data = result.object
 
       // 分页数据处理
       if (options.page && data.content) {

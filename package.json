@@ -5,15 +5,14 @@
   "author": "zhuchentong <2037630@163.com>",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
+    "dev": "cross-env MODE=dev nuxt",
+    "build": "cross-env MODE=prod nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
   "dependencies": {
-    "axios": "^0.18.0",
     "dayjs": "^1.7.5",
     "nuxt-edge": "^2.0.0-25569931.85a8af5",
     "nuxt-property-decorator": "^1.2.0",
@@ -24,6 +23,9 @@
     "vuex-class": "^0.3.1"
   },
   "devDependencies": {
+    "@nuxtjs/axios": "^5.3.1",
+    "@nuxtjs/proxy": "^1.2.4",
+    "cross-env": "^5.2.0",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
     "nuxt-ts": "^0.0.3",

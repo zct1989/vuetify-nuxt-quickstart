@@ -1,4 +1,10 @@
 const path = require('path')
+const env = require(`./environemnt/${process.env.MODE}.env`);
+
+// 如果设置server则更换server
+if (process.env.server) {
+  env['URL_SERVER'] = process.env.server
+}
 
 module.exports = {
   /*
@@ -16,6 +22,7 @@ module.exports = {
       { rel: 'stylesheet', href: 'https://fonts.loli.net/css?family=Roboto:300,400,500,700|Material+Icons' },
     ]
   },
+  env: Object.assign({}, env),
   /*
   ** Customize the progress bar color
   */
@@ -58,17 +65,29 @@ module.exports = {
   router: {
     extendRoutes(routes) {
       // 默认路由为登陆页面
-      routes.push( {
-          path: '*',
-          component:  path.join(__dirname, 'pages', '404.vue').replace(/\\/g, '\\\\')
-        })
+      routes.push({
+        path: '*',
+        component: path.join(__dirname, 'pages', '404.vue').replace(/\\/g, '\\\\')
+      })
     },
     middleware: [
       'launch'
     ]
   },
   modules: [
-    "~/modules/typescript"
-  ]
+    "~/modules/typescript",
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
+  ],
+  axios: {
+    proxy: false
+    // See https://github.com/nuxt-community/axios-module#options
+  },
+  proxy: {
+    '/api': {
+      target: env['URL_SERVER'],
+      pathRewrite: { '^/api': '' }
+    }
+  }
 }
 

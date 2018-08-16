@@ -1,15 +1,13 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6 align-center justify-center align-content-center>
-      <v-form ref="login-form" v-model="loginValid">
-        <v-text-field label="Name" v-model="loginModel.name" :rules="loginRules.name" :counter="10" required></v-text-field>
-        <v-text-field label="E-mail" v-model="loginModel.email" :rules="loginRules.email" required></v-text-field>
-        <v-btn :disabled="!loginValid" @click="onLogin">
-          登录
-        </v-btn>
-        <v-btn @click="onClear">重置</v-btn>
-      </v-form>
-    </v-flex>
+  <v-layout px-4 column justify-center align-content-space-around fill-height style="background-color:#3c4454">
+    <v-form ref="login-form" v-model="loginValid">
+      <v-text-field dark solo label="用户名" v-model="loginModel.username" :rules="loginRules.username" :counter="20" required></v-text-field>
+      <v-text-field dark solo label="密码" type="password" v-model="loginModel.password" :rules="loginRules.password" required></v-text-field>
+    </v-form>
+    <v-btn :disabled="!loginValid" @click="onLogin">
+      登录
+    </v-btn>
+    <v-btn @click="onClear">重置</v-btn>
   </v-layout>
 </template>
 
@@ -17,49 +15,43 @@
 import { Layout } from "~/core/decorator";
 import { Dependencies } from "~/core/decorator";
 import { Component, Vue } from "nuxt-property-decorator";
-import { UserService } from "~/services/user.service";
+import { LoginService } from "~/services/login.service";
 
-@Layout("default")
+@Layout("empty", {
+  fill: true
+})
 @Component
 export default class Login extends Vue {
-  @Dependencies(UserService) 
-  private userService: UserService;
+  @Dependencies(LoginService) private loginService: LoginService;
 
   private loginModel = {
-    name: "",
-    password: ""
+    username: "administrator",
+    password: "888888"
   };
 
   private loginValid = true;
 
   private loginRules = {
-    name: [
-      value => !!value || "Name is required",
-      value =>
-        (value && value.length <= 10) || "Name must be less than 10 characters"
+    username: [
+      value => !!value || "请输入用户名",
+      value => (value && value.length <= 20) || "用户名在20个字符以内"
     ],
-    email: [
-      value => !!value || "E-mail is required",
-      value => /.+@.+/.test(value) || "E-mail must be valid"
-    ]
+    password: [value => !!value || "请输入密码"]
   };
 
   private onLogin() {
     let loginForm = this.$refs["login-form"] as any;
 
     if (loginForm.validate()) {
-       this.$router.push('/')
-      // this.userService
-      //   .login({
-      //     username: "123",
-      //     password: "asdsd"
-      //   })
-      //   .subscribe(user => {
-
-      //   }, msg => {
-      //     console.log(123123123)
-         
-      //   });
+      this.loginService.login(this.loginModel).subscribe(
+        async data => {
+          await this.$store.dispatch("updateUserLoginData", data);
+          this.$router.push("/");
+        },
+        msg => {
+          console.log(msg);
+        }
+      );
     }
   }
 

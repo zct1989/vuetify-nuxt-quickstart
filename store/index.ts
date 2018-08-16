@@ -1,27 +1,33 @@
-const layoutConfig = {
-  default: {
-    toolbar: true,
-    title: 'test',
-    leftDrawer: true,
-    rightDrawer: false
-  }
-}
 
 
 export const state = () => ({
   launch: false,
   user: '',
-  layout: {
-    default: layoutConfig.default
-  }
+  token: '',
+  department: '',
+  layout: {}
 })
 
 export const mutations = {
   updateUser(state, user) {
     state.user = user
   },
+  updateToken(state, token) {
+    state.token = token
+  },
+  updateDepartment(state, department) {
+    state.department = department
+  },
   updateLayoutConfig(state, option) {
     let { layout, config } = option
-    state.layout[layout] = Object.assign({}, layoutConfig[layout], config)
+    state.layout[layout] = config
+  }
+}
+
+export const actions = {
+  async updateUserLoginData({ commit }, { user, token, sysOrg }) {
+    commit('updateUser', user)
+    commit('updateToken', token)
+    commit('updateDepartment', sysOrg)
   }
 }

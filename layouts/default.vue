@@ -14,7 +14,7 @@
       </v-list>
     </v-navigation-drawer>
     <!--顶部工具条-->
-    <v-toolbar fixed app v-if="layout.default.toolbar">
+    <v-toolbar fixed app v-if="layoutConfig.toolbar">
       <!--左侧侧边栏开关-->
       <v-toolbar-side-icon @click="leftDrawer = !leftDrawer" v-if="layoutConfig.leftDrawer"></v-toolbar-side-icon>
       <!--页面标题-->
@@ -28,7 +28,7 @@
     </v-toolbar>
     <!--页面内容-->
     <v-content>
-      <v-container>
+      <v-container :class="{'pa-0':!layoutConfig.padding}" :fill-height="layoutConfig.fill">
         <nuxt />
       </v-container>
     </v-content>
@@ -58,8 +58,17 @@ import { State } from "vuex-class";
 export default class extends Vue {
   @State layout;
 
+  private readonly defaultConfig = {
+    toolbar: true,
+    padding: true,
+    title: "test",
+    leftDrawer: true,
+    rightDrawer: false,
+    fill: false
+  };
+
   get layoutConfig() {
-    return this.layout.default;
+    return Object.assign({}, this.defaultConfig, this.layout.default);
   }
 
   private leftDrawer = false;
