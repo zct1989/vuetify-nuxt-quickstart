@@ -20,4 +20,31 @@ export class LoginService {
       }
     }
   }
+
+  /**
+   * 用户登录
+   * @param data 
+   */
+  @Request({
+    server: loginController.getUserInfoByToken
+  })
+  getUserInfoByToken(token) {
+    return {
+      headers: {
+        authorization: token
+      }
+    }
+  }
+
+
+  /**
+   * 用户登录
+   * @param data 
+   */
+  @Request({
+    server: loginController.ttt
+  })
+  ttt(): any {
+    return {}
+  }
 }

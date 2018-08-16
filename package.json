@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "dayjs": "^1.7.5",
+    "js-cookie": "^2.2.0",
     "nuxt-edge": "^2.0.0-25569931.85a8af5",
     "nuxt-property-decorator": "^1.2.0",
     "rxjs": "^6.2.2",

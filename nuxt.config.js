@@ -41,8 +41,9 @@ module.exports = {
    * 插件配置
    */
   plugins: [
-    '~/plugins/vuetify.js',
-    "~/plugins/bootstrap"
+    '~/plugins/vuetify',
+    "~/plugins/bootstrap",
+    '~/plugins/axios',
   ],
   /*
   ** Build configuration

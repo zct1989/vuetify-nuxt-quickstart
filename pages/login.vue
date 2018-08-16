@@ -46,7 +46,7 @@ export default class Login extends Vue {
       this.loginService.login(this.loginModel).subscribe(
         async data => {
           await this.$store.dispatch("updateUserLoginData", data);
-          this.$router.push("/");
+          this.$router.replace("/");
         },
         msg => {
           console.log(msg);

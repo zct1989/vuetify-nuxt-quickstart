@@ -1,4 +1,6 @@
 
+import cookies from 'js-cookie'
+import { setToken } from '~/plugins/axios'
 
 export const state = () => ({
   launch: false,
@@ -14,6 +16,12 @@ export const mutations = {
   },
   updateToken(state, token) {
     state.token = token
+    setToken(token)
+    if (token) {
+      cookies.set('token', token)
+    } else {
+      cookies.remove('token')
+    }
   },
   updateDepartment(state, department) {
     state.department = department
@@ -29,5 +37,10 @@ export const actions = {
     commit('updateUser', user)
     commit('updateToken', token)
     commit('updateDepartment', sysOrg)
+  },
+  async cleanUserLoginData({ commit }) {
+    commit('updateUser', {})
+    commit('updateToken', '')
+    commit('updateDepartment', {})
   }
 }

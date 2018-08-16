@@ -1,4 +1,4 @@
-import axiosInstance from '~/plugins/axios'
+import { axiosInstance } from '~/plugins/axios'
 import Qs from 'qs'
 // import store from '~/store'
 import { Observable, empty } from "rxjs";
@@ -10,7 +10,7 @@ export class NetService {
   private userToken
   private store
 
-  public static generateRequestUrl({ service, controller, action, url }: { service: string, controller: string, action: string, url?: string }, append = [], sort?): String {
+  public static generateRequestUrl({ service, controller, action, url }: { service: string, controller: string, action: string, url?: string }, append = [], sort?): string {
     // 自定义url优先级最高
     if (url) return url
 
@@ -72,9 +72,11 @@ export class NetService {
       }
 
       // 逻辑异常检测
+      // TODO:暂时全部返回数据
       if (ex.errmsg === undefined) {
-        console.error(ex.stack)
-        return empty()
+        // console.error(ex.stack)
+        // return empty()
+        return observer.error("服务状态异常，请稍后重试")
       } else {
         return observer.error(ex.errmsg)
       }
