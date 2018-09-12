@@ -1,6 +1,6 @@
-# h5-6
+# vueitfy-nuxt-quickstart
 
-> Nuxt.js project
+> 基于vuetify+nuxt的h5项目开发模板
 
 ## Build Setup
 
@@ -18,6 +18,4 @@ $ npm start
 # generate static project
 $ npm run generate
 ```
-
-For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
 
