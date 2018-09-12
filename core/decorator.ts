@@ -85,7 +85,7 @@ export function Middleware(middleware: string) {
 export function Layout(layout: string, config = {}) {
   return function (target) {
     target.options.layout = ({ store }) => {
-      store.commit('updateLayoutConfig', {
+      store.commit('layout/updateLayoutConfig', {
         layout,
         config
       })

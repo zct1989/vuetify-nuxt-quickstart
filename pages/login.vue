@@ -43,15 +43,16 @@ export default class Login extends Vue {
     let loginForm = this.$refs["login-form"] as any;
 
     if (loginForm.validate()) {
-      this.loginService.login(this.loginModel).subscribe(
-        async data => {
-          await this.$store.dispatch("updateUserLoginData", data);
-          this.$router.replace("/");
-        },
-        msg => {
-          console.log(msg);
-        }
-      );
+      this.$router.replace("/");
+      // this.loginService.login(this.loginModel).subscribe(
+      //   async data => {
+      //     await this.$store.dispatch("updateUserLoginData", data);
+      //     this.$router.replace("/");
+      //   },
+      //   msg => {
+      //     console.log(msg);
+      //   }
+      // );
     }
   }
 

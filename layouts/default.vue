@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="app">
     <!--侧边栏-->
     <v-navigation-drawer :mini-variant.sync="miniVariant" v-model="leftDrawer" fixed app>
       <v-list>
@@ -14,9 +14,11 @@
       </v-list>
     </v-navigation-drawer>
     <!--顶部工具条-->
-    <v-toolbar fixed app v-if="layoutConfig.toolbar">
+    <v-toolbar fixed app v-if="layoutConfig.toolbar" class="v-toolbar" flat dark>
       <!--左侧侧边栏开关-->
       <v-toolbar-side-icon @click="leftDrawer = !leftDrawer" v-if="layoutConfig.leftDrawer"></v-toolbar-side-icon>
+      <!--返回上次菜单箭头-->
+      <v-btn  flat icon v-if="layoutConfig.backDrawer" @click="$router.go(-1)" ><v-icon>arrow_back_ios</v-icon></v-btn>
       <!--页面标题-->
       <v-toolbar-title v-text="layoutConfig.title"></v-toolbar-title>
       <!--间距-->
@@ -51,12 +53,13 @@
 <script lang="ts">
 import { Middleware } from "~/core/decorator";
 import { Component, Vue } from "nuxt-property-decorator";
-import { State } from "vuex-class";
+import { namespace } from "vuex-class";
+const LayoutModule = namespace('layout')
 
 @Middleware("auth")
 @Component
 export default class extends Vue {
-  @State layout;
+  @LayoutModule.State('default') layout;
 
   private readonly defaultConfig = {
     toolbar: true,
@@ -68,7 +71,7 @@ export default class extends Vue {
   };
 
   get layoutConfig() {
-    return Object.assign({}, this.defaultConfig, this.layout.default);
+    return Object.assign({}, this.defaultConfig, this.layout);
   }
 
   private leftDrawer = false;
@@ -89,3 +92,13 @@ export default class extends Vue {
   ];
 }
 </script>
+<style lang="less">
+  .app{
+    .container{
+      padding: 0!important;
+    }
+    .v-toolbar{
+      background: rgb(100,161,235)!important;
+    }
+  }
+</style>

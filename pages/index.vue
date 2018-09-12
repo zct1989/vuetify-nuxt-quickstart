@@ -1,6 +1,5 @@
 <template>
   <v-layout column justify-center align-center>
-    <v-toolbar></v-toolbar>
     <v-flex xs12 sm8 md6>
       页面内容写在这里1231
       <v-btn @click="ttt">123</v-btn>
@@ -14,7 +13,6 @@ import { Component, Vue } from "nuxt-property-decorator";
 import { LoginService } from "~/services/login.service";
 
 @Layout("default", {
-  toolbar: true,
   padding: false
 })
 @Component

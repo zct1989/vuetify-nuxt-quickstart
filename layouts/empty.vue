@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="app">
     <v-content>
       <v-container :class="{'pa-0':!layoutConfig.padding}" :fill-height="layoutConfig.fill">
         <nuxt />
@@ -10,11 +10,12 @@
 
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
-import { State } from "vuex-class";
+import { namespace } from "vuex-class";
+const LayoutModule = namespace('layout')
 
 @Component
 export default class extends Vue {
-  @State layout;
+  @LayoutModule.State('empty') layout;
 
   private readonly defaultConfig = {
     empty: {
@@ -24,7 +25,7 @@ export default class extends Vue {
   };
 
   get layoutConfig() {
-    return Object.assign({}, this.defaultConfig, this.layout.empty);
+    return Object.assign({}, this.defaultConfig, this.layout);
   }
 }
 </script>
